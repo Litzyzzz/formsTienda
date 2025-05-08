@@ -89,7 +89,7 @@
             <td>${{ $juego->precio }}</td>
             <td>{{ $juego->cantidad_dispo }}</td>
             <td>
-   |        @if($juego->imagen_url)
+          @if($juego->imagen_url)
             <img src="{{ $juego->imagen_url }}" alt="{{ $juego->titulo }}" style="max-width: 100px; max-height: 100px;">
             @else
             Sin imagen
