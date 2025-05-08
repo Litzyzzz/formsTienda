@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Juegos extends Model
 {
@@ -18,6 +19,24 @@ class Juegos extends Model
         'generoId',
         'proveedorId',
     ];
+
+    // Accesor para la URL de la imagen
+    public function getImagenUrlAttribute()
+    {
+        return $this->imagen ? Storage::url($this->imagen) : asset('images/default-game.png');
+    }
+    
+    // Eliminar imagen al borrar el juego
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($juego) {
+            if ($juego->imagen && Storage::disk('public')->exists($juego->imagen)) {
+                Storage::disk('public')->delete($juego->imagen);
+            }
+        });
+    }
     
         
         

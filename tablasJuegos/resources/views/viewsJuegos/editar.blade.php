@@ -73,50 +73,77 @@
 <body>
 <h1>Editar Juego</h1>
 
-<form action=""method="POST">
+<form action="{{ route('editar', $videogames->juegosId) }}" method="POST" enctype="multipart/form-data">
     @csrf
     @method('PUT')
     
     <label for="titulo">Título:</label><br>
-    <input type="text" id="titulo" name="titulo" value="{{ $videogames->titulo }}"><br><br>
+    <input type="text" id="titulo" name="titulo" value="{{ old('titulo', $videogames->titulo) }}" required><br><br>
     
     <label for="descripcion">Descripción:</label><br>
-    <textarea id="descripcion" name="descripcion">{{ $videogames->descripcion }}</textarea><br><br>
+    <textarea id="descripcion" name="descripcion" required>{{ old('descripcion', $videogames->descripcion) }}</textarea><br><br>
     
     <label for="precio">Precio:</label><br>
-    <input type="number" id="precio" name="precio" value="{{ $videogames->precio }}"><br><br>
+    <input type="number" id="precio" name="precio" step="0.01" min="0" value="{{ old('precio', $videogames->precio) }}" required><br><br>
     
     <label for="cantidad_dispo">Cantidad Disponible:</label><br>
-    <input type="number" id="cantidad_dispo" name="cantidad_dispo" value="{{ $videogames->cantidad_dispo }}"><br><br>
+    <input type="number" id="cantidad_dispo" name="cantidad_dispo" min="0" value="{{ old('cantidad_dispo', $videogames->cantidad_dispo) }}" required><br><br>
     
-    <label for="imagen">Imagen:</label><br>
-    <input type="text" id="imagen" name="imagen" value="{{ $videogames->imagen }}"><br><br>
+    <!-- Campo de imagen actual -->
+    <div>
+        <label>Imagen Actual:</label><br>
+        @if($videogames->imagen)
+            <img src="{{ Storage::url($videogames->imagen) }}" alt="{{ $videogames->titulo }}" style="max-width: 200px; max-height: 200px;">
+            <p>{{ basename($videogames->imagen) }}</p>
+        @else
+            <p>No hay imagen cargada</p>
+        @endif
+    </div>
     
-    <label for="genero_id">Género:</label><br>
-    <select id="genero_id" name="genero_id">
+    <!-- Campo para subir nueva imagen -->
+    <label for="imagen">Cambiar Imagen:</label><br>
+    <input type="file" id="imagen" name="imagen" accept="image/jpeg,image/png,image/jpg,image/gif"><br>
+    <small>Formatos aceptados: jpeg, png, jpg, gif (Máx. 2MB)</small><br><br>
+    
+    <label for="generoId">Género:</label><br>
+    <select id="generoId" name="generoId" required>
         @foreach($categorias as $categoria)
-            <option value="{{ $categoria->categoriaId }}" {{ $videogames->genero_id == $categoria->categoriaId ? 'selected' : '' }}>{{ $categoria->nombre }}</option>
+            <option value="{{ $categoria->categoriaId }}" {{ old('generoId', $videogames->generoId) == $categoria->categoriaId ? 'selected' : '' }}>
+                {{ $categoria->nombre }}
+            </option>
         @endforeach
     </select><br><br>
     
-    <label for="plataforma_id">Plataforma:</label><br>
-    <select id="plataforma_id" name="plataforma_id">
+    <label for="plataformaId">Plataforma:</label><br>
+    <select id="plataformaId" name="plataformaId" required>
         @foreach($plataformas as $plataforma)
-            <option value="{{ $plataforma->id }}" {{ $videogames->plataforma_id == $plataforma->id ? 'selected' : '' }}>{{ $plataforma->nombrePlataforma }}</option>
+            <option value="{{ $plataforma->plataformaId }}" {{ old('plataformaId', $videogames->plataformaId) == $plataforma->plataformaId ? 'selected' : '' }}>
+                {{ $plataforma->nombrePlataforma }}
+            </option>
         @endforeach
     </select><br><br>
 
-    <label for="proveedor_id">Proveedor:</label><br>
-    <select id="proveedor_id" name="proveedor_id">
+    <label for="proveedorId">Proveedor:</label><br>
+    <select id="proveedorId" name="proveedorId" required>
         @foreach($proveedores as $proveedor)
-            <option value="{{ $proveedor->id }}" {{ $videogames->proveedor_id == $proveedor->id ? 'selected' : '' }}>{{$proveedor->nombre }}</option>
-                
+            <option value="{{ $proveedor->proveedorId }}" {{ old('proveedorId', $videogames->proveedorId) == $proveedor->proveedorId ? 'selected' : '' }}>
+                {{ $proveedor->nombre }}
+            </option>                
         @endforeach
     </select><br><br>
 
     <button type="submit">Actualizar</button>
-
 </form>
+
+@if($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
     
 </body>
 </html>
