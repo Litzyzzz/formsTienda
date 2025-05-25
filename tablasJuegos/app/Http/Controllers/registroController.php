@@ -32,7 +32,7 @@ public function store(Request $request)
         'nombre' => $request->nombre,
         'email' => $request->email,
         'password' => bcrypt($request->password),
-        'rol_Id' => 1, // Cliente =3 Admin=1
+        'rol_Id' => 3, // Cliente =3 Admin=1
     ]);
 
     return redirect()->route('login')->with('success', '¡Registro exitoso!');
