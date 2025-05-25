@@ -14,7 +14,7 @@
 </head>
 <body>
     <a href="{{ route('ordenes.create') }}" class="btn btn-secondary">hacer Pedido</a>
-    <a href="{{ route('productos.create') }}" class="btn btn-secondary">ingresar producto</a>
+
     <div class="container mt-5">
         <h1>Pedidos Realizados</h1>
 
@@ -59,7 +59,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach($productos as $producto)
+                @foreach($videogames as $producto)
                 <tr>
                     <td>{{ $producto->producto_id }}</td>
                     <td>{{ $producto->nombre }}</td>

@@ -5,15 +5,44 @@ use App\Http\Controllers\JuegosController;
 use App\Http\Controllers\CategoriasController;
 use App\Http\Controllers\PlataformasController;
 use App\Http\Controllers\ProveedoresController;
+use App\Http\Controllers\registroController;
+use App\Http\Controllers\loginController;
+use App\Http\Controllers\vistaJuegosController;
+use App\Http\Controllers\compraController;
+
+Route::get('/', function () {
+    return view('index');
+});
 
 
+Route::prefix('login')->group(function(){
+Route::get('/', [loginController::class, 'showLoginForm'])->name('login');
+// Procesar login (POST)
+Route::post('/login', [loginController::class, 'login'])->name('login.post');
+// Cerrar sesión
+Route::post('logout', [loginController::class, 'logout'])->name('logout');
+
+});
+Route::prefix('registro')->group(function(){
+Route::get('/registro/crar', [registroController::class, 'create'])->name('registro.create');
+Route::post('/registro', [registroController::class, 'store'])->name('registro.store');
+});
+
+Route::prefix('compra')->group(function(){
+Route::get('/ordenes/create', [compraController::class, 'create'])->name('ordenes.create');
+Route::post('/ordenes', [compraController::class, 'store'])->name('ordenes.store'); 
+Route::get('/ordenes', [compraController::class, 'index'])->name('ordenes.index');
+
+});
+
+Route::prefix('juegos')->group(function(){
 Route::get('/', [JuegosController::class, 'index']) ->name('index');
 Route::get('/crear', [JuegosController::class, 'create']) ->name('crear');
 Route::post('/guardar', [JuegosController::class, 'guardar']) ->name('guardar');
 Route::get('/editar/{id}', [JuegosController::class, 'editar']) ->name('editar');
 Route::put('/editar/{id}', [JuegosController::class, 'actualizar']) ->name('actualizar');
 Route::delete('/eliminar/{id}', [JuegosController::class, 'eliminar']) ->name('eliminar');
-
+});
 
 
 
@@ -44,5 +73,9 @@ Route::get('/editar/{id}', [ProveedoresController::class, 'editar']) ->name('pro
 Route::put('/editar/{id}', [ProveedoresController::class, 'actualizar']) ->name('proActualizar');
 Route::delete('/eliminar/{id}', [ProveedoresController::class, 'eliminar']) ->name('proEliminar');
 
+});
+
+Route::prefix('vistaJuegos')->group(function(){
+Route::get('/juegos', [vistaJuegosController::class, 'index']) ->name('vistaJuegos.index');
 });
 

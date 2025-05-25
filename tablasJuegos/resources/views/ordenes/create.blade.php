@@ -3,17 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tienda Online</title>
+    <title>Comprar</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
 </head>
 <body>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container">
-                <a class="navbar-brand" href="#">Mi Tienda</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav me-auto">
                         <li class="nav-item">
@@ -50,38 +46,44 @@
         <div class="row">
             <!-- Lista de Productos -->
             <div class="col-md-8">
-                <h2 class="mb-4">Nuestros Productos</h2>
-                <div class="row">
-                    @foreach($productos as $producto)
-                    <div class="col-md-6 col-lg-4">
-                        <div class="card product-card">
-                            <img src="{{ $producto->imagen_url ?? 'https://via.placeholder.com/300' }}" class="card-img-top product-img" alt="{{ $producto->nombre }}">
-                            <div class="card-body">
-                                <h5 class="card-title">{{ $producto->nombre }}</h5>
-                                <p class="card-text">{{ Str::limit($producto->descripcion, 100) }}</p>
-                                <p class="h5 text-primary">${{ number_format($producto->precio, 2) }}</p>
-                                <div class="d-flex justify-content-between align-items-center mt-3">
-                                    <div class="input-group" style="width: 120px;">
-                                        <button class="btn btn-outline-secondary decrement" type="button">-</button>
-                                        <input type="number" class="form-control text-center quantity-input" 
-                                               data-product-id="{{ $producto->producto_id }}" 
-                                               data-price="{{ $producto->precio }}"
-                                               value="0" min="0" max="{{ $producto->cantidad_disponible }}">
-                                        <button class="btn btn-outline-secondary increment" type="button">+</button>
-                                    </div>
-                                </div>
-                                <small class="text-muted">Stock: {{ $producto->cantidad_disponible }}</small>
-                            </div>
+    <h2 class="mb-4">Nuestros Productos</h2>
+    <div class="row">
+        @foreach($videogames as $juego)
+        <div class="col-md-6 col-lg-4 mb-4 d-flex align-items-stretch">
+            <div class="card w-100">
+                <!-- Contenedor flexible para la imagen -->
+                <div class="img-container" style="height: 180px; overflow: hidden; display: flex; justify-content: center; align-items: center; background: #f8f9fa;">
+                    <img src="{{ $juego->imagen_url ?? 'https://via.placeholder.com/300' }}" 
+                         style="object-fit: contain; width: 100%; height: 100%;"
+                         alt="{{ $juego->nombre }}">
+                </div>
+                
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">{{ $juego->nombre }}</h5>
+                    <p class="card-text flex-grow-1">{{ Str::limit($juego->descripcion, 100) }}</p>
+                    <p class="h5 text-warning">${{ number_format($juego->precio, 2) }}</p>
+                    <div class="d-flex justify-content-between align-items-center mt-3">
+                        <div class="input-group" style="width: 120px;">
+                            <button class="btn btn-outline-secondary decrement" type="button">-</button>
+                            <input type="number" class="form-control text-center quantity-input" 
+                                   data-product-id="{{ $juego->juegosId }}" 
+                                   data-price="{{ $juego->precio }}"
+                                   value="0" min="0" max="{{ $juego->cantidad_dispo }}">
+                            <button class="btn btn-outline-secondary increment" type="button">+</button>
                         </div>
                     </div>
-                    @endforeach
+                    <small class="text-muted">Stock: {{ $juego->cantidad_dispo }}</small>
                 </div>
             </div>
+        </div>
+        @endforeach
+    </div>
+</div>
             
             <!-- Resumen del Carrito -->
             <div class="col-md-4">
                 <div class="card cart-summary">
-                    <div class="card-header bg-primary text-white">
+                    <div class="card-header bg-dark text-white">
                         <h5 class="mb-0">Resumen del Pedido</h5>
                     </div>
                     <div class="card-body">
@@ -92,7 +94,7 @@
 
                         <hr>
 
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">Pagar</button>
+                        <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">Pagar</button>
 
 
                     </div>
@@ -163,7 +165,7 @@
         </div>
     </div>
 
-    <a href="{{ route('productos.create') }}" class="btn btn-secondary">ingresar producto</a>
+   
    
     <script>
 
